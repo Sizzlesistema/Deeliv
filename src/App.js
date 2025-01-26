@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaHome, FaThList, FaUser, FaShoppingCart } from 'react-icons/fa';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Cart from './components/cart'; 
 import Profile from './components/Profile.js'; // Certifique-se de que o caminho está correto
 import './components/Profile.css';
 import './App.css';
@@ -11,6 +12,8 @@ const App = () => {
   const [telefone, setTelefone] = useState('');
 
   const categories = ['hamburgueres', 'pizzas', 'bebidas', 'porçoes'];
+  const [carrinho, setCarrinho] = useState([]);
+
 
  
   const products = {
@@ -88,6 +91,20 @@ const App = () => {
     alert(`Buscando WhatsApp para o número: ${telefone}`);
   };
 
+  const addToCart = (product) => {
+    setCarrinho([...carrinho, product]);
+  };
+
+  const removeFromCart = (index) => {
+    const newCart = [...carrinho];
+    newCart.splice(index, 1);
+    setCarrinho(newCart);
+  };
+  
+  const clearCart = () => {
+    setCarrinho([]);
+  };
+  
   return (
     <Router> {/* Envolvendo toda a aplicação com Router */}
       <div className="app-container">
@@ -134,7 +151,10 @@ const App = () => {
                               <h3 className="card-title">{product.name}</h3>
                               <p className="card-description">{product.description}</p>
                               <p className="card-price">{product.price}</p>
-                              <button className="button" onClick={openModal}>Peça Agora</button>
+                              <button className="button" onClick={() => { addToCart(product); openModal(); }}>
+                                          Peça Agora
+                              </button>
+
                             </div>
                           </div>
                         ))}
@@ -146,6 +166,7 @@ const App = () => {
             />
             {/* Rota para o perfil */}
             <Route path="/profile" element={<Profile />} />
+            <Route path="/cart" element={<Cart carrinho={carrinho} removeFromCart={removeFromCart} clearCart={clearCart} />} />
           </Routes>
         </div>
 
@@ -178,10 +199,11 @@ const App = () => {
             <FaUser className="icon" />
             <span className="icon-label">Perfil</span>
           </Link>
-          <Link to="#" className="footer-link">
-            <FaShoppingCart className="icon" />
-            <span className="icon-label">Carrinho</span>
+          <Link to="/cart" className="footer-link">
+          <FaShoppingCart className="icon" />
+          <span className="icon-label">Carrinho</span>
           </Link>
+
         </footer>
       </div>
     </Router>
