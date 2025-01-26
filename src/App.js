@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { FaHome, FaThList, FaUser, FaShoppingCart } from 'react-icons/fa';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Profile from './components/Profile.js'; // Certifique-se de que o caminho está correto
+import './components/Profile.css';
 import './App.css';
 
 const App = () => {
@@ -86,88 +89,102 @@ const App = () => {
   };
 
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <div className="header-banner"></div>
-        <div className="header-content">
-          <img src="/images/1.png" alt="Logo da Loja" className="header-logo" />
-          <h1 className="header-title">Q´delícia Fast Food</h1>
-        </div>
-      </header>
-
-      <div className="container">
-        <div className="categories">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => handleCategoryClick(category)}
-              className={`category-button ${filteredCategory === category ? 'active' : ''}`}
-            >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </button>
-          ))}
-          <button className="category-button" onClick={resetFilter}>Mostrar Todos</button>
-        </div>
-
-        {categories.map((category) => (
-          <section
-            key={category}
-            id={category}
-            className={`product-section ${filteredCategory === category || !filteredCategory ? 'filtered' : 'hidden'}`}
-          >
-            <h2 className="section-title">{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
-            <div className="product-list">
-              {products[category].map((product, index) => (
-                <div className="card" key={index}>
-                  <img src={product.image} alt={`Imagem de ${product.name}`} className="card-image" />
-                  <div className="card-content">
-                    <h3 className="card-title">{product.name}</h3>
-                    <p className="card-description">{product.description}</p>
-                    <p className="card-price">{product.price}</p>
-                    <button className="button" onClick={openModal}>Peça Agora</button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
-
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close-btn" onClick={closeModal}>&times;</span>
-            <h2>Digite seu telefone</h2>
-            <input
-              type="text"
-              value={telefone}
-              onChange={handleInputChange}
-              placeholder="Digite seu telefone"
-            />
-            <button onClick={buscarWhatsApp}>Buscar</button>
+    <Router> {/* Envolvendo toda a aplicação com Router */}
+      <div className="app-container">
+        <header className="app-header">
+          <div className="header-banner"></div>
+          <div className="header-content">
+            <img src="/images/1.png" alt="Logo da Loja" className="header-logo" />
+            <h1 className="header-title">Q´delícia Fast Food</h1>
           </div>
-        </div>
-      )}
+        </header>
 
-      <footer className="app-footer">
-        <a href="/" className="footer-link">
-          <FaHome className="icon" />
-          <span className="icon-label">Início</span>
-        </a>
-        <a href="#" className="footer-link">
-          <FaThList className="icon" />
-          <span className="icon-label">Categorias</span>
-        </a>
-        <a href="#" className="footer-link">
-          <FaUser className="icon" />
-          <span className="icon-label">Perfil</span>
-        </a>
-        <a href="#" className="footer-link">
-          <FaShoppingCart className="icon" />
-          <span className="icon-label">Carrinho</span>
-        </a>
-      </footer>
-    </div>
+        <div className="container">
+          <Routes>
+            {/* Rota inicial (página principal) */}
+            <Route 
+              path="/" 
+              element={
+                <div>
+                  <div className="categories">
+                    {categories.map((category) => (
+                      <button
+                        key={category}
+                        onClick={() => handleCategoryClick(category)}
+                        className={`category-button ${filteredCategory === category ? 'active' : ''}`}
+                      >
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </button>
+                    ))}
+                    <button className="category-button" onClick={resetFilter}>Mostrar Todos</button>
+                  </div>
+
+                  {categories.map((category) => (
+                    <section
+                      key={category}
+                      id={category}
+                      className={`product-section ${filteredCategory === category || !filteredCategory ? 'filtered' : 'hidden'}`}
+                    >
+                      <h2 className="section-title">{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
+                      <div className="product-list">
+                        {products[category].map((product, index) => (
+                          <div className="card" key={index}>
+                            <img src={product.image} alt={`Imagem de ${product.name}`} className="card-image" />
+                            <div className="card-content">
+                              <h3 className="card-title">{product.name}</h3>
+                              <p className="card-description">{product.description}</p>
+                              <p className="card-price">{product.price}</p>
+                              <button className="button" onClick={openModal}>Peça Agora</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  ))}
+                </div>
+              } 
+            />
+            {/* Rota para o perfil */}
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </div>
+
+        {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close-btn" onClick={closeModal}>&times;</span>
+              <h2>Digite seu telefone</h2>
+              <input
+                type="text"
+                value={telefone}
+                onChange={handleInputChange}
+                placeholder="Digite seu telefone"
+              />
+              <button onClick={buscarWhatsApp}>Buscar</button>
+            </div>
+          </div>
+        )}
+
+        <footer className="app-footer">
+          <Link to="/" className="footer-link">
+            <FaHome className="icon" />
+            <span className="icon-label">Início</span>
+          </Link>
+          <Link to="#" className="footer-link">
+            <FaThList className="icon" />
+            <span className="icon-label">Categorias</span>
+          </Link>
+          <Link to="/profile" className="footer-link">
+            <FaUser className="icon" />
+            <span className="icon-label">Perfil</span>
+          </Link>
+          <Link to="#" className="footer-link">
+            <FaShoppingCart className="icon" />
+            <span className="icon-label">Carrinho</span>
+          </Link>
+        </footer>
+      </div>
+    </Router>
   );
 };
 
