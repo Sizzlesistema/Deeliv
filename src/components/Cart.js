@@ -1,7 +1,7 @@
 // src/components/Cart.js
 
 import React from 'react';
-import './Cart.css';
+import './cart.css';
 
 const Cart = ({ carrinho, removeFromCart, clearCart }) => {
   // Função para calcular o total do carrinho
