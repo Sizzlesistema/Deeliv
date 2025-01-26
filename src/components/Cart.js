@@ -46,4 +46,4 @@ const Cart = ({ carrinho, removeFromCart, clearCart }) => {
   );
 };
 
-export default cart;
+export default Cart;
