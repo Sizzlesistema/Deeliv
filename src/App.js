@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaHome, FaThList, FaUser, FaShoppingCart } from 'react-icons/fa';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Cart from './components/cart';
 import Cart from './components/cart.js'; 
 import Profile from './components/Profile.js'; // Certifique-se de que o caminho está correto
 import './components/Profile.css';
